@@ -24,7 +24,25 @@ export default function App() {
       setLat(map.current.getCenter().lat.toFixed(4));
       setZoom(map.current.getZoom().toFixed(2));
     });
-  });
+
+    fetch('https://api.refill.earth/')
+      .then(response => response.json())
+      .then(data => {
+        const { shops } = data;
+        shops.forEach(shop => {
+          const { name, address, lat, lng, image, website } = shop;
+          new mapboxgl.Marker()
+            .setLngLat([parseFloat(lng), parseFloat(lat)])
+            .setPopup(new mapboxgl.Popup().setHTML(`
+              <img src="${image}" alt="" style="width: 100%; aspect-ratio: 2; object-fit: cover; border-radius: 3px;" />
+              <h3>${name}</h3>
+              <p>${address}</p>
+              <a href="${website}" target="_blank">Visit Website</a>
+            `))
+            .addTo(map.current);
+        });
+      });
+  }, []);
 
   return (
     <div>
