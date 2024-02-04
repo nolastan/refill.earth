@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 
-mapboxgl.accessToken = 'pk.eyJ1Ijoibm9sYXN0YW4iLCJhIjoiY2lrMXBqaThrMDNicXR1bTA2YmhlOXNldSJ9.JM66zf6O9v1gLgbrQZfrHA';
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
 export default function App() {
   const mapContainer = useRef(null);
@@ -25,16 +25,17 @@ export default function App() {
       setZoom(map.current.getZoom().toFixed(2));
     });
 
-    fetch('https://api.refill.earth/')
+    fetch(process.env.REACT_APP_API_URL)
       .then(response => response.json())
       .then(data => {
         const { shops } = data;
         shops.forEach(shop => {
           const { name, address, lat, lng, image, website } = shop;
+          const image_tag = image ? `<img src="${image}" alt="" style="width: 100%; aspect-ratio: 2; object-fit: cover; border-radius: 3px;" />` : '';
           new mapboxgl.Marker()
             .setLngLat([parseFloat(lng), parseFloat(lat)])
             .setPopup(new mapboxgl.Popup().setHTML(`
-              <img src="${image}" alt="" style="width: 100%; aspect-ratio: 2; object-fit: cover; border-radius: 3px;" />
+              ${image_tag}
               <h3>${name}</h3>
               <p>${address}</p>
               <a href="${website}" target="_blank">Visit Website</a>
