@@ -30,14 +30,16 @@ export default function App() {
       .then(data => {
         const { shops } = data;
         shops.forEach(shop => {
-          const { name, address, description, lat, lng, image, website } = shop;
+          const { name, address, start, description, lat, lng, image, website } = shop;
           const image_tag = image ? `<img src="${image}" alt="" style="width: 100%; aspect-ratio: 2; object-fit: cover; border-radius: 3px;" />` : '';
+          const date = new Date(start).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
           new mapboxgl.Marker()
             .setLngLat([parseFloat(lng), parseFloat(lat)])
             .setPopup(new mapboxgl.Popup().setHTML(`
               ${image_tag}
               <h3>${name}</h3>
-              <p>${address}</p>
+              <p style="font-weight: bold; color: #666">${date}</p>
+              <p><em>${address}</em></p>
               <p>${description}</p>
               ${website ? `<a href="${website}" target="_blank">Visit Website</a>` : ''}
             `))
