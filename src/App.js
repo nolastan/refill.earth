@@ -30,7 +30,7 @@ export default function App() {
       .then(data => {
         const { shops } = data;
         shops.forEach(shop => {
-          const { name, address, lat, lng, image, website } = shop;
+          const { name, address, description, lat, lng, image, website } = shop;
           const image_tag = image ? `<img src="${image}" alt="" style="width: 100%; aspect-ratio: 2; object-fit: cover; border-radius: 3px;" />` : '';
           new mapboxgl.Marker()
             .setLngLat([parseFloat(lng), parseFloat(lat)])
@@ -38,7 +38,8 @@ export default function App() {
               ${image_tag}
               <h3>${name}</h3>
               <p>${address}</p>
-              <a href="${website}" target="_blank">Visit Website</a>
+              <p>${description}</p>
+              ${website ? `<a href="${website}" target="_blank">Visit Website</a>` : ''}
             `))
             .addTo(map.current);
         });
