@@ -15,7 +15,7 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "echo refill.earth > ./build/CNAME && gh-pages -b gh-pages -d build",
+    "deploy": "echo map.thepark.today > ./build/CNAME && gh-pages -b gh-pages -d build",
     "start": "PORT=4000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
