@@ -3,13 +3,13 @@
 @tailwind utilities;
 
 .mapboxgl-popup-content {
-    @apply bg-green-950 rounded gap-2 flex flex-col max-h-96 overflow-y-auto text-green-50 p-4
+    @apply bg-green-950 rounded gap-2 flex flex-col max-h-96 overflow-y-auto text-green-50 p-0
 }
 
 .mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
 .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
 .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
-    @apply border-b-green-950;
+    @apply border-b-green-900;
 }
 
 .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
