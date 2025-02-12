@@ -36,9 +36,8 @@ export default function App() {
           new mapboxgl.Marker()
             .setLngLat([parseFloat(lng), parseFloat(lat)])
             .setPopup(new mapboxgl.Popup().setHTML(`
-              ${image_tag}
-              <h3>${name}</h3>
-              <p style="font-weight: bold; color: #666">${date}</p>
+              <h2 class="text-xl font-semibold text-green-50">${name}</h2>
+              <p class="text-lg font-medium text-green-100">${date}</p>
               <p><em>${address}</em></p>
               <p>${description}</p>
               ${website ? `<a href="${website}" target="_blank">Visit Website</a>` : ''}
@@ -50,7 +49,7 @@ export default function App() {
 
   return (
     <div>
-      <div ref={mapContainer} className="map-container" />
+      <div ref={mapContainer} className="w-screen h-screen" />
     </div>
   );
 }

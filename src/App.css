@@ -1,47 +1,31 @@
-body {
-  margin: 0;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mapboxgl-popup-content {
+    @apply bg-green-950 rounded gap-2 flex flex-col max-h-96 overflow-y-auto text-green-50 p-4
 }
 
-.App {
-  text-align: center;
+.mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
+    @apply border-b-green-950;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
+    @apply border-t-green-950;
 }
 
-.map-container {
-  height: 100vh;
-  width: 100%;
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+    @apply border-r-green-950;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+    @apply border-l-green-950;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.mapboxgl-popup-close-button {
+    @apply hidden
 }

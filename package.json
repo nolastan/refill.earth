@@ -13,6 +13,9 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
+  "devDependencies": {
+    "gh-pages": "6.3.0"
+  },
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "echo map.thepark.today > ./build/CNAME && gh-pages -b gh-pages -d build",
