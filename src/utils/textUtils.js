@@ -12,7 +12,6 @@ export const processUrls = (text) => {
     let urls = [];
   
     // First try to extract URLs from HTML links
-    let htmlMatch;
     const htmlMatches = [...text.matchAll(htmlLinkRegex)];
     if (htmlMatches.length > 0) {
       // Extract URLs from href attributes
