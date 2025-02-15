@@ -49,7 +49,9 @@ export default function App() {
                 <h2 class="text-xl font-black text-green-50 tracking-tight leading-6">${name}</h2>
               </div>
               <div class="p-4 gap-2 flex flex-col">
-                <p class="font-semibold leading-[14px]">${address}</p>
+                <p class="font-semibold leading-[14px]">
+                  ${address}
+                </p>
                 <p>${updatedDescription}</p>
                 ${url ? `<a href="${url}" target="_blank" class="top-3 right-3 absolute w-6 h-6 hover:text-green-500 focus:outline-none focus-visible:outline-1 focus-visible:outline-green-700 focus-visible:bg-green-800 rounded-full p-1">
                   <svg data-slot="icon" fill="none" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
