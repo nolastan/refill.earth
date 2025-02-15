@@ -25,7 +25,7 @@ export default function App() {
       setZoom(map.current.getZoom().toFixed(2));
     });
 
-    fetch(process.env.REACT_APP_API_URL)
+    fetch("https://api.thepark.today/")
       .then(response => response.json())
       .then(data => {
         const { shops } = data;
