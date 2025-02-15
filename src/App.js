@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import { processUrls } from './utils/textUtils';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -32,10 +33,7 @@ export default function App() {
         shops.forEach(shop => {
           const { name, address, start, description, lat, lng, image, website } = shop;
           const image_tag = image ? `<img src="${image}" alt="" style="width: 100%; aspect-ratio: 2; object-fit: cover; border-radius: 3px;" />` : '';
-          const urlRegex = /(https?:\/\/[^\s]+)/;
-          const urlMatch = description.match(urlRegex);
-          const url = urlMatch ? urlMatch[0] : '';
-          const updatedDescription = description.replace(url, '');
+          const { url, cleanedText: updatedDescription } = processUrls(description);
 
           const date = new Date(start);
           const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });
