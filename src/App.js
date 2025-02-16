@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
-import { processUrls, getDayOFWeek } from './utils/textUtils';
+import { processUrls, getDayOFWeek, shortenAddress } from './utils/textUtils';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -46,7 +46,7 @@ export default function App() {
               </div>
               <div class="p-4 gap-2 flex flex-col">
                 <p class="font-semibold leading-[14px]">
-                  ${address}
+                  ${shortenAddress(address)}
                 </p>
                 <p>${updatedDescription}</p>
                 ${url ? `<a href="${url}" target="_blank" class="top-3 right-3 absolute w-6 h-6 hover:text-green-500 focus:outline-none focus-visible:outline-1 focus-visible:outline-green-700 focus-visible:bg-green-800 rounded-full p-1">

@@ -15,6 +15,27 @@ export const getDayOFWeek = (start) => {
     return { dayOfWeek, fullDate };  
 }
 
+export const shortenAddress = (address) => {
+  if (!address) return '';
+  
+  // Look for first number or "San Francisco"
+  const numberMatch = address.match(/\d+/);
+  const sfMatch = address.toLowerCase().indexOf('san francisco');
+  
+  // Get the earlier of the two matches
+  let endIndex = address.length;
+  if (numberMatch) endIndex = Math.min(endIndex, numberMatch.index);
+  if (sfMatch !== -1) endIndex = Math.min(endIndex, sfMatch);
+  
+  // Get everything before the match
+  const locationName = address.substring(0, endIndex).trim();
+  
+  // Remove trailing comma and whitespace
+  return locationName.replace(/,\s*$/, '');
+}
+
+
+
 export const processUrls = (text) => {
     // Handle both HTML links and plain text URLs
     const htmlLinkRegex = /<a\b[^>]*href="([^"]*)"[^>]*>.*?<\/a>/g;
