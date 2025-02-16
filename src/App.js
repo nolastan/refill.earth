@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
-import { processUrls, getDayOFWeek, shortenAddress } from './utils/textUtils';
+import { processUrls, getDayOfWeek, shortenAddress } from './utils/textUtils';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -35,7 +35,7 @@ export default function App() {
           const image_tag = image ? `<img src="${image}" alt="" style="width: 100%; aspect-ratio: 2; object-fit: cover; border-radius: 3px;" />` : '';
           const { url, cleanedText: updatedDescription } = processUrls(description);
           
-          const { dayOfWeek, fullDate } = getDayOFWeek(start);
+          const { dayOfWeek, fullDate } = getDayOfWeek(start);
 
           new mapboxgl.Marker()
             .setLngLat([parseFloat(lng), parseFloat(lat)])

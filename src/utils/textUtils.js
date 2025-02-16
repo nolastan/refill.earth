@@ -4,15 +4,24 @@
  * @returns {Object} - Object containing cleaned text and extracted URLs
  */
 
-export const getDayOFWeek = (start) => {
-    // Add offset to compensate for timezone
-    const date = new Date(start);
-    const offset = date.getTimezoneOffset() * 60000; // Convert offset to milliseconds
-    const adjustedDate = new Date(date.getTime() + offset);
-    
-    const dayOfWeek = adjustedDate.toLocaleDateString('en-US', { weekday: 'long' });
-    const fullDate = adjustedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-    return { dayOfWeek, fullDate };  
+export const getDayOfWeek = (start) => {
+  const date = new Date(start);
+  
+  // Check if it's an all-day event by seeing if it's at midnight UTC
+  const isAllDayEvent = start.includes('T00:00:00.000Z');
+
+  // Only add timezone offset for all-day events
+  let adjustedDate;
+  if (isAllDayEvent) {
+      const offset = date.getTimezoneOffset() * 60000;
+      adjustedDate = new Date(date.getTime() + offset);
+  } else {
+      adjustedDate = date;
+  }
+  
+  const dayOfWeek = adjustedDate.toLocaleDateString('en-US', { weekday: 'long' });
+  const fullDate = adjustedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  return { dayOfWeek, fullDate };  
 }
 
 export const shortenAddress = (address) => {
