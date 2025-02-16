@@ -3,6 +3,18 @@
  * @param {string} text - The input text that may contain URLs or HTML links
  * @returns {Object} - Object containing cleaned text and extracted URLs
  */
+
+export const getDayOFWeek = (start) => {
+    // Add offset to compensate for timezone
+    const date = new Date(start);
+    const offset = date.getTimezoneOffset() * 60000; // Convert offset to milliseconds
+    const adjustedDate = new Date(date.getTime() + offset);
+    
+    const dayOfWeek = adjustedDate.toLocaleDateString('en-US', { weekday: 'long' });
+    const fullDate = adjustedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    return { dayOfWeek, fullDate };  
+}
+
 export const processUrls = (text) => {
     // Handle both HTML links and plain text URLs
     const htmlLinkRegex = /<a\b[^>]*href="([^"]*)"[^>]*>.*?<\/a>/g;
