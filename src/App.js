@@ -26,6 +26,11 @@ export default function App() {
       setZoom(map.current.getZoom().toFixed(2));
     });
 
+    const popup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false
+    });
+
     fetch("https://api.thepark.today/")
       .then(response => response.json())
       .then(data => {
@@ -47,25 +52,120 @@ export default function App() {
             .setPopup(new mapboxgl.Popup({
               offset: [0, -24]
             }).setHTML(`
-              <div class="bg-green-900 p-4 relative">
-                <time datetime="${new Date(start).toISOString()}" title="${fullDate}" class="text-lg font-medium text-green-200 opacity-80">${dayOfWeek}</time>
-                <h2 class="text-xl font-black text-green-50 tracking-tight leading-6">${name}</h2>
-              </div>
-              <div class="p-4 gap-2 flex flex-col">
-                <p class="font-semibold leading-[14px]">
-                  ${shortenAddress(address)}
-                </p>
-                <p>${updatedDescription}</p>
-                ${url ? `<a href="${url}" target="_blank" class="top-3 right-3 absolute w-6 h-6 hover:text-green-500 focus:outline-none focus-visible:outline-1 focus-visible:outline-green-700 focus-visible:bg-green-800 rounded-full p-1">
-                  <svg data-slot="icon" fill="none" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"></path>
-                  </svg>
-                </a>` : ''}
+              <div style="pointer-events: auto;">
+                <div class="bg-green-900 p-4 relative">
+                  <time datetime="${new Date(start).toISOString()}" title="${fullDate}" class="text-lg font-medium text-green-200 opacity-80">${dayOfWeek}</time>
+                  <h2 class="text-xl font-black text-green-50 tracking-tight leading-6">${name}</h2>
+                </div>
+                <div class="p-4 gap-2 flex flex-col">
+                  <p class="font-semibold leading-[14px]">
+                    ${shortenAddress(address)}
+                  </p>
+                  <p>${updatedDescription}</p>
+                  ${url ? `<a href="${url}" target="_blank" class="top-3 right-3 absolute w-6 h-6 hover:text-green-500 focus:outline-none focus-visible:outline-1 focus-visible:outline-green-700 focus-visible:bg-green-800 rounded-full p-1">
+                    <svg data-slot="icon" fill="none" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"></path>
+                    </svg>
+                  </a>` : ''}
+                </div>
               </div>
               ${image_tag}
             `))
             .addTo(map.current);
         });
+      });
+    
+    fetch("https://api.thepark.today/parks")
+      .then(response => response.json())
+      .then(parks => {
+        // Convert parks data to GeoJSON with polygons
+        const geojson = {
+          type: 'FeatureCollection',
+          features: parks.map(park => ({
+            type: 'Feature',
+            geometry: park.shape || {
+              // Fallback to point if no shape available
+              type: 'Point',
+              coordinates: [park.longitude, park.latitude]
+            },
+            properties: {
+              name: park.property_name,
+              acres: park.acres || 1,
+              id: park.property_id
+            }
+          }))
+        };
+  
+        // Add the parks source
+        map.current.addSource('parks', {
+          type: 'geojson',
+          data: geojson
+        });
+  
+        // Add fill layer for parks
+        map.current.addLayer({
+          id: 'parks-fill',
+          type: 'fill',
+          source: 'parks',
+          paint: {
+            'fill-color': '#16a34a',
+            'fill-opacity': 0.3
+          }
+        });
+  
+        // Add hover effects
+        let hoveredParkId = null;
+  
+        // Helper function to calculate center of a MultiPolygon
+        const calculateCenter = (geometry) => {
+          let coordinates;
+          
+          switch (geometry.type) {
+            case 'MultiPolygon':
+              coordinates = geometry.coordinates[0][0];
+              break;
+            case 'Polygon':
+              coordinates = geometry.coordinates[0];
+              break;
+            case 'Point':
+              return geometry.coordinates;
+            default:
+              console.log('Unexpected geometry type:', geometry.type);
+              return null;
+          }
+        
+          // Calculate the center by averaging all points
+          if (coordinates && coordinates.length > 0) {
+            const center = coordinates.reduce((sum, coord) => {
+              return [sum[0] + coord[0], sum[1] + coord[1]];
+            }, [0, 0]);
+            return [
+              center[0] / coordinates.length,
+              center[1] / coordinates.length
+            ];
+          }
+          return null;
+        };
+        
+        map.current.on('mousemove', 'parks-fill', (e) => {
+          if (e.features.length > 0) {
+            map.current.getCanvas().style.cursor = 'pointer';
+
+            // Calculate center point of the park
+            const center = calculateCenter(e.features[0].geometry);
+            if (center) {
+              popup
+                .setLngLat(center)
+                .setHTML(`<div class="bg-green-900 p-2"><h3 class="text-green-50">${e.features[0].properties.name}</h3></div>`)
+                .addTo(map.current);
+            }
+          }
+        });
+
+        map.current.on('mouseleave', 'parks-fill', () => {
+          map.current.getCanvas().style.cursor = '';          
+          popup.remove();
+        });          
       });
   }, []);
 

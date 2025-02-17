@@ -6,26 +6,16 @@
     @apply bg-green-950 rounded max-h-96 overflow-y-auto text-green-50 p-0
 }
 
-.mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
-    @apply border-b-green-900;
-}
-
-.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
-.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
-    @apply border-t-green-950;
-}
-
-.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
-    @apply border-r-green-950;
-}
-
-.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
-    @apply border-l-green-950;
+.mapboxgl-popup-tip {
+    @apply hidden
 }
 
 .mapboxgl-popup-close-button {
     @apply hidden
+}
+
+.mapboxgl-popup,
+ .mapboxgl-popup-content,
+ .mapboxgl-popup-tip {
+  pointer-events: none !important;
 }
