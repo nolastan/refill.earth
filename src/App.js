@@ -42,7 +42,7 @@ export default function App() {
           
           const { dayOfWeek, fullDate } = getDayOfWeek(start);
           const markerElement = document.createElement('div');
-          markerElement.innerHTML = `<span class="text-4xl">${emoji || '📍'}</span>`;
+          markerElement.innerHTML = `<span class="text-4xl hover:text-5xl">${emoji || '📍'}</span>`;
 
           new mapboxgl.Marker(markerElement, {
             anchor: 'bottom',
