@@ -13,6 +13,12 @@ export default function App() {
 
   useEffect(() => {
     if (map.current) return; // initialize map only once
+
+    // Create tooltip div
+    const tooltip = document.createElement('div');
+    tooltip.className = 'absolute w-screen left-0 right-0 bottom-0 whitespace-nowrap text-center hidden mb-5';
+    document.body.appendChild(tooltip);
+    
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/nolastan/cl3nhkh9y001114mql0e3j8fj?optimize=true',
@@ -108,13 +114,9 @@ export default function App() {
           type: 'fill',
           source: 'parks',
           paint: {
-            'fill-color': '#16a34a',
-            'fill-opacity': 0.3
+            'fill-opacity': 0
           }
         });
-  
-        // Add hover effects
-        let hoveredParkId = null;
   
         // Helper function to calculate center of a MultiPolygon
         const calculateCenter = (geometry) => {
@@ -146,32 +148,28 @@ export default function App() {
           }
           return null;
         };
-        
-        map.current.on('mousemove', 'parks-fill', (e) => {
-          if (e.features.length > 0) {
-            map.current.getCanvas().style.cursor = 'pointer';
 
-            // Calculate center point of the park
-            const center = calculateCenter(e.features[0].geometry);
-            if (center) {
-              popup
-                .setLngLat(center)
-                .setHTML(`<div class="bg-green-900 p-2"><h3 class="text-green-50">${e.features[0].properties.name}</h3></div>`)
-                .addTo(map.current);
-            }
+        mapContainer.current.addEventListener('mousemove', (e) => {
+          const features = map.current.queryRenderedFeatures(
+            [e.offsetX, e.offsetY],
+            { layers: ['parks-fill'] }
+          );
+          
+          if (features.length === 0) {
+            // No park under toast, hide tooltip
+            tooltip.classList.add('hidden');
+          } else {
+            // Update park name toast
+            tooltip.innerHTML = `<div class="bg-green-700 bg-opacity-60 py-1 px-2 rounded text-xs z-50 text-green-50 font-medium inline-block">${features[0].properties.name}</div>`;
+            tooltip.classList.remove('hidden');
           }
         });
-
-        map.current.on('mouseleave', 'parks-fill', () => {
-          map.current.getCanvas().style.cursor = '';          
-          popup.remove();
-        });          
       });
   }, []);
 
   return (
     <div>
-      <div ref={mapContainer} className="w-screen h-screen" />
+      <div ref={mapContainer} className="w-screen h-screen relative" />
     </div>
   );
 }
