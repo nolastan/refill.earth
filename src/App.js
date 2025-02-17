@@ -31,15 +31,22 @@ export default function App() {
       .then(data => {
         const { shops } = data;
         shops.forEach(shop => {
-          const { name, address, start, description, lat, lng, image, website } = shop;
+          const { name, address, start, description, lat, lng, image, emoji } = shop;
           const image_tag = image ? `<img src="${image}" alt="" style="width: 100%; aspect-ratio: 2; object-fit: cover; border-radius: 3px;" />` : '';
           const { url, cleanedText: updatedDescription } = processUrls(description);
           
           const { dayOfWeek, fullDate } = getDayOfWeek(start);
+          const markerElement = document.createElement('div');
+          markerElement.innerHTML = `<span class="text-4xl">${emoji || '📍'}</span>`;
 
-          new mapboxgl.Marker()
+          new mapboxgl.Marker(markerElement, {
+            anchor: 'bottom',
+            offset: [0, 12]
+          })
             .setLngLat([parseFloat(lng), parseFloat(lat)])
-            .setPopup(new mapboxgl.Popup().setHTML(`
+            .setPopup(new mapboxgl.Popup({
+              offset: [0, -24]
+            }).setHTML(`
               <div class="bg-green-900 p-4 relative">
                 <time datetime="${new Date(start).toISOString()}" title="${fullDate}" class="text-lg font-medium text-green-200 opacity-80">${dayOfWeek}</time>
                 <h2 class="text-xl font-black text-green-50 tracking-tight leading-6">${name}</h2>
