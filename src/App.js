@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import { processUrls, getDayOfWeek, shortenAddress } from './utils/textUtils';
+import FloatingActionButton from './FloatingActionButton';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
@@ -170,6 +171,7 @@ export default function App() {
   return (
     <div>
       <div ref={mapContainer} className="w-screen h-screen relative" />
+      <FloatingActionButton />
     </div>
   );
 }
