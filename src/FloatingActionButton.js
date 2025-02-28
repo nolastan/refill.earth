@@ -58,14 +58,20 @@ const FloatingActionButton = () => {
                 connections and celebrate the vibrant activities happening throughout our city.
               </p>
 
-              <div className="pt-4">
+              <div className="pt-4 gap-3 flex flex-col sm:flex-row font-medium">
                 <a
                   href="https://nolastan.notion.site/"
-                  target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block px-6 py-3 bg-white text-green-900 rounded hover:bg-green-100 transition-colors"
+                  className="text-center inline-block px-6 py-3 bg-white text-green-900 rounded hover:bg-green-100 transition-colors"
                 >
                   Join the mailing list
+                </a>
+                <a
+                  href="https://www.stanfordrosenthal.com/submit-event"
+                  rel="noopener noreferrer"
+                  className="text-center inline-block px-6 py-3 border border-white text-green-50 rounded hover:bg-green-800 hover:border-green-200 transition-colors"
+                >
+                  Submit an event
                 </a>
               </div>
 
