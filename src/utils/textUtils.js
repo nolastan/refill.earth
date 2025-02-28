@@ -4,24 +4,68 @@
  * @returns {Object} - Object containing cleaned text and extracted URLs
  */
 
-export const getDayOfWeek = (start) => {
-  const date = new Date(start);
+export const getDateRangeDisplay = (start, end) => {
+  const startDate = new Date(start);
+  const endDate = new Date(end);
   
   // Check if it's an all-day event by seeing if it's at midnight UTC
   const isAllDayEvent = start.includes('T00:00:00.000Z');
 
   // Only add timezone offset for all-day events
-  let adjustedDate;
+  let adjustedStartDate, adjustedEndDate;
   if (isAllDayEvent) {
-      const offset = date.getTimezoneOffset() * 60000;
-      adjustedDate = new Date(date.getTime() + offset);
+    const offset = startDate.getTimezoneOffset() * 60000;
+    adjustedStartDate = new Date(startDate.getTime() + offset);
+    adjustedEndDate = new Date(endDate.getTime() + offset);
   } else {
-      adjustedDate = date;
+    adjustedStartDate = startDate;
+    adjustedEndDate = endDate;
   }
   
-  const dayOfWeek = adjustedDate.toLocaleDateString('en-US', { weekday: 'long' });
-  const fullDate = adjustedDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-  return { dayOfWeek, fullDate };  
+  // Calculate the difference in days
+  const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
+  const diffDays = Math.round(Math.abs((adjustedEndDate - adjustedStartDate) / oneDay));
+  
+  // Format options
+  const weekdayFormat = { weekday: 'long' };
+  const longMonthDayFormat = { month: 'long', day: 'numeric' };
+  const fullDateFormat = { year: 'numeric', month: 'long', day: 'numeric' };
+  
+  // Get full date for both start and end
+  const startFullDate = adjustedStartDate.toLocaleDateString('en-US', fullDateFormat);
+  const endFullDate = adjustedEndDate.toLocaleDateString('en-US', fullDateFormat);
+  
+  let displayText;
+  
+  // For one day event: print day of week (Monday)
+  if (diffDays === 0) {
+    displayText = adjustedStartDate.toLocaleDateString('en-US', weekdayFormat);
+  } 
+  // For 2 day event: (Monday & Tuesday)
+  else if (diffDays === 1) {
+    const startDayOfWeek = adjustedStartDate.toLocaleDateString('en-US', weekdayFormat);
+    const endDayOfWeek = adjustedEndDate.toLocaleDateString('en-US', weekdayFormat);
+    displayText = `${startDayOfWeek} & ${endDayOfWeek}`;
+  } 
+  // For 3 day event: (Monday – Wednesday)
+  else if (diffDays === 2) {
+    const startDayOfWeek = adjustedStartDate.toLocaleDateString('en-US', weekdayFormat);
+    const endDayOfWeek = adjustedEndDate.toLocaleDateString('en-US', weekdayFormat);
+    displayText = `${startDayOfWeek} to ${endDayOfWeek}`;
+  } 
+  // For 4+ day event: print month and day (Feb 10 – 20)
+  else {
+    const startMonthDay = adjustedStartDate.toLocaleDateString('en-US', longMonthDayFormat);
+    const endMonthDay = adjustedEndDate.toLocaleDateString('en-US', longMonthDayFormat);
+    displayText = `${startMonthDay} to ${endMonthDay}`;
+  }
+  
+  return { 
+    dayOfWeek: adjustedStartDate.toLocaleDateString('en-US', weekdayFormat), 
+    fullDate: startFullDate,
+    endFullDate: endFullDate,
+    displayText: displayText
+  };
 }
 
 export const shortenAddress = (address) => {

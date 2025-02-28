@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
-import { processUrls, getDayOfWeek, shortenAddress } from './utils/textUtils';
+import { processUrls, getDateRangeDisplay, shortenAddress } from './utils/textUtils';
 import FloatingActionButton from './FloatingActionButton';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -43,11 +43,11 @@ export default function App() {
       .then(data => {
         const { shops } = data;
         shops.forEach(shop => {
-          const { name, address, start, description, lat, lng, image, emoji } = shop;
+          const { name, address, start, end, description, lat, lng, image, emoji } = shop;
           const image_tag = image ? `<img src="${image}" alt="" style="width: 100%; aspect-ratio: 2; object-fit: cover; border-radius: 3px;" />` : '';
           const { url, cleanedText: updatedDescription } = processUrls(description);
           
-          const { dayOfWeek, fullDate } = getDayOfWeek(start);
+          const { displayText, fullDate } = getDateRangeDisplay(start, end);
           const markerElement = document.createElement('div');
           markerElement.innerHTML = `<span class="text-4xl hover:text-5xl">${emoji || '📍'}</span>`;
 
@@ -61,7 +61,7 @@ export default function App() {
             }).setHTML(`
               <div style="pointer-events: auto;">
                 <div class="bg-green-900 p-4 relative">
-                  <time datetime="${new Date(start).toISOString()}" title="${fullDate}" class="text-lg font-medium text-green-200 opacity-80">${dayOfWeek}</time>
+                  <time datetime="${new Date(start).toISOString()}" title="${fullDate}" class="text-lg font-medium text-green-200 opacity-80">${displayText}</time>
                   <h2 class="text-xl font-black text-green-50 tracking-tight leading-6">${name}</h2>
                 </div>
                 <div class="p-4 gap-2 flex flex-col">
