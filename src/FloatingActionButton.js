@@ -79,7 +79,7 @@ const FloatingActionButton = () => {
                 From the creator of <a 
                 href="https://www.talktomel.com" 
                 className="underline hover:text-green-200 transition-colors">Mel</a>—the
-                missing unsusbscribe button for postal mail.
+                missing unsubscribe button for postal mail.
               </p>
 
             </div>
