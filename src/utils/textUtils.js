@@ -69,25 +69,37 @@ export const getDateRangeDisplay = (start, end) => {
 }
 
 export const shortenAddress = (address) => {
-  if (!address) return '';
+  // Handle multi-line addresses by joining with commas
+  address = address.replace(/\n/g, ', ');
   
-  // Look for first number or "San Francisco"
-  const numberMatch = address.match(/\d+/);
-  const sfMatch = address.toLowerCase().indexOf('san francisco');
+  // Remove ZIP codes (both 5-digit and 5+4 digit formats)
+  address = address.replace(/\b\d{5}(-\d{4})?\b/g, '');
   
-  // Get the earlier of the two matches
-  let endIndex = address.length;
-  if (numberMatch) endIndex = Math.min(endIndex, numberMatch.index);
-  if (sfMatch !== -1) endIndex = Math.min(endIndex, sfMatch);
+  // Remove "San Francisco" (case insensitive)
+  address = address.replace(/\bSan Francisco\b/gi, '');
   
-  // Get everything before the match
-  const locationName = address.substring(0, endIndex).trim();
+  // Remove "CA" and "California" (case insensitive)
+  address = address.replace(/\b(CA|California)\b/gi, '');
   
-  // Remove trailing comma and whitespace
-  return locationName.replace(/,\s*$/, '');
+  // Remove "USA" and "United States" (with or without comma)
+  address = address.replace(/,?\s*(USA|United States)\b/gi, '');
+  
+  // Clean up excess commas and spaces
+  address = address.replace(/,\s*,/g, ',');     // Double commas
+  address = address.replace(/\s+/g, ' ');       // Multiple spaces
+  address = address.replace(/,\s*$/g, '');      // Trailing comma
+  address = address.replace(/^\s*,\s*/g, '');   // Leading comma
+  
+  // Additional cleanup for any remaining patterns of excess commas
+  // Repeat the comma cleanup to catch any new consecutive commas
+  address = address.replace(/,\s*,/g, ',');
+  
+  // Final pass to remove any trailing/leading commas again
+  address = address.replace(/,\s*$/g, '');
+  address = address.replace(/^\s*,\s*/g, '');
+  
+  return address.trim();
 }
-
-
 
 export const processUrls = (text) => {
     // Handle both HTML links and plain text URLs

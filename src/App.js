@@ -114,7 +114,7 @@ export default function App() {
                 </div>
                 <div class="p-4 gap-2 flex flex-col">
                   <p class="font-semibold leading-[14px]">
-                    ${location}
+                    ${shortenAddress(location)}
                   </p>
                   <p>${description}</p>
                   ${url ? `<a href="${url}" target="_blank" class="top-3 right-3 absolute w-6 h-6 hover:text-green-500 focus:outline-none focus-visible:outline-1 focus-visible:outline-green-700 focus-visible:bg-green-800 rounded-full p-1">
