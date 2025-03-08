@@ -43,13 +43,19 @@ export default function App() {
       .then(data => {
         const { shops } = data;
         shops.forEach(shop => {
-          const { name, address, start, end, description, lat, lng, image, emoji } = shop;
+          let { name, address, start, end, description, lat, lng, image, emoji } = shop;
           const image_tag = image ? `<img src="${image}" alt="" style="width: 100%; aspect-ratio: 2; object-fit: cover; border-radius: 3px;" />` : '';
           const { url, cleanedText: updatedDescription } = processUrls(description);
           
           const { displayText, fullDate } = getDateRangeDisplay(start, end);
           const markerElement = document.createElement('div');
-          markerElement.innerHTML = `<span class="text-4xl hover:text-5xl">${emoji || '📍'}</span>`;
+
+          if (name.startsWith('[FUF]')) {
+            markerElement.innerHTML = `<img src="fuf-sticker.png" class="h-12 hover:h-14" />`;
+            name = name.replace('[FUF]', 'Friends of the Urban Forest: ');
+          } else {
+            markerElement.innerHTML = `<span class="text-4xl hover:text-5xl">${emoji || '📍'}</span>`;
+          } 
 
           new mapboxgl.Marker(markerElement, {
             anchor: 'bottom',
