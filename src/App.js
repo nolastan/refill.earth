@@ -51,8 +51,11 @@ export default function App() {
           const markerElement = document.createElement('div');
 
           if (name.startsWith('[FUF]')) {
-            markerElement.innerHTML = `<img src="fuf-sticker.png" class="h-12 hover:h-14" />`;
+            markerElement.innerHTML = `<img src="fuf-sticker.png" class="w-20 hover:w-24" />`;
             name = name.replace('[FUF]', 'Friends of the Urban Forest: ');
+          } else if (name.startsWith('[Sutro]')) {
+            markerElement.innerHTML = `<img src="sutro-sticker.png" class="w-20 hover:w-24" />`;
+            name = name.replace('[Sutro]', 'Sutro Stewards: ');
           } else {
             markerElement.innerHTML = `<span class="text-4xl hover:text-5xl">${emoji || '📍'}</span>`;
           } 
