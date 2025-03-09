@@ -98,9 +98,7 @@ export default function App() {
           const { title, location, start, end, url, lat, lng, description } = shop;
           const { displayText, fullDate } = getDateRangeDisplay(start, end);
           const markerElement = document.createElement('div');
-          markerElement.innerHTML = `<span class="text-xl hover:text-2xl">
-            <img src="https://img1.wsimg.com/isteam/ip/fad50d2f-ac5a-4f12-a65f-fc1d7ccf7f33/RefuseRefuseLogoVersions_R3_White.png/:/rs=w:562,h:200,cg:true,m/cr=w:562,h:200/qt=q:95" class="h-6 bg-green-700 p-0.5 rounded bg-opacity-70 hover:bg-opacity-100" />
-          </span>`;
+          markerElement.innerHTML = `<img src="refuse-sticker.png" class="w-20 hover:w-24" />`;
 
           new mapboxgl.Marker(markerElement, {
             anchor: 'bottom',
