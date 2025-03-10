@@ -55,27 +55,25 @@ const FloatingActionButton = () => {
               <p className="text-lg leading-relaxed">
                 thepark.today is a live map of what's happening in San Francisco's public spaces. These parks are where we come together, 
                 where we find joy, and where we build resilience. By making these spaces more visible and accessible, we can strengthen our 
-                connections and celebrate the vibrant activities happening throughout our city.
-              </p>
-
-              <div className="pt-4 gap-3 flex flex-col sm:flex-row font-medium">
-                <a
-                  href="https://nolastan.notion.site/"
-                  rel="noopener noreferrer"
-                  className="text-center inline-block px-6 py-3 bg-white text-green-900 rounded hover:bg-green-100 transition-colors"
-                >
-                  Join the mailing list
-                </a>
-                <a
+                connections and celebrate the vibrant activities happening throughout our city. <a
                   href="https://www.stanfordrosenthal.com/submit-event"
                   rel="noopener noreferrer"
-                  className="text-center inline-block px-6 py-3 border border-white text-green-50 rounded hover:bg-green-800 hover:border-green-200 transition-colors"
+                  className="underline font-semibold hover:text-yellow-400 transition-colors"
                 >
-                  Submit an event
+                  Submit an event.
                 </a>
+              </p>
+
+              <div className="flex justify-center my-12">
+                <iframe 
+                  src="https://theparktoday.substack.com/embed" 
+                  height="320" 
+                  className="w-full rounded" 
+                  allow="fullscreen"
+                />
               </div>
 
-              <p class="text-sm text-green-100">
+              <p className="text-sm text-green-100">
                 From the creator of <a 
                 href="https://www.talktomel.com" 
                 className="underline hover:text-green-200 transition-colors">Mel</a>—the
