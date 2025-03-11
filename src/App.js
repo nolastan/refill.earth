@@ -115,6 +115,29 @@ export default function App() {
         });
       });
 
+      // La Cochinita Food
+      fetch("https://api.thepark.today/cochinita")
+      .then(response => response.json())
+      .then(events => {
+        events.reverse().filter(event => event.lat !== null).forEach(event => {
+          const { title, location, start, end, lat, lng, description, marker, url } = event;
+          const { displayText, fullDate } = getDateRangeDisplay(start, end);
+          const markerElement = document.createElement('div');
+          markerElement.innerHTML = `<img src="${marker}" class="w-10 hover:w-12" />`;
+
+          new mapboxgl.Marker(markerElement, {
+            anchor: 'bottom',
+            offset: [0, 12]
+          })
+            .setLngLat([parseFloat(lng), parseFloat(lat)])
+            .setPopup(new mapboxgl.Popup({
+              offset: [0, -24]
+            }).setHTML(generateMarker(start, fullDate, displayText, title, location, description, url)))
+            .addTo(map.current);
+        });
+      });
+
+
     fetch("https://api.thepark.today/parks")
       .then(response => response.json())
       .then(parks => {
