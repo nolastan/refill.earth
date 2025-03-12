@@ -56,6 +56,9 @@ export default function App() {
           } else if (name.startsWith('[Sutro]')) {
             markerElement.innerHTML = `<img src="sutro-sticker.png" class="w-20 hover:w-24" />`;
             name = name.replace('[Sutro]', 'Sutro Stewards: ');
+          } else if (name.startsWith('[chowder]')) {
+            markerElement.innerHTML = `<img src="chowder.png" class="w-12 hover:w-14" />`;
+            name = name.replace('[chowder]', '');
           } else {
             markerElement.innerHTML = `<span class="text-4xl hover:text-5xl">${emoji || '📍'}</span>`;
           } 
@@ -123,7 +126,7 @@ export default function App() {
           const { title, location, start, end, lat, lng, description, marker, url } = event;
           const { displayText, fullDate } = getDateRangeDisplay(start, end);
           const markerElement = document.createElement('div');
-          markerElement.innerHTML = `<img src="${marker}" class="w-10 hover:w-12" />`;
+          markerElement.innerHTML = `<img src="${marker}" class="w-12 hover:w-14" />`;
 
           new mapboxgl.Marker(markerElement, {
             anchor: 'bottom',
