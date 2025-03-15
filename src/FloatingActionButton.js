@@ -16,7 +16,8 @@ const FloatingActionButton = () => {
         className={`
           fixed top-2 right-2 z-50
           w-6 h-6 rounded-full shadow-lg
-          bg-green-900 text-white text-lg
+          bg-[#c4e8cf] text-stone-700 text-lg
+          border border-stone-700
           transition-all duration-300 ease-in-out
           hover:bg-teal-500
           flex items-center justify-center

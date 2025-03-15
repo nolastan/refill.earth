@@ -23,7 +23,7 @@ export default function App() {
     
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/nolastan/cl3nhkh9y001114mql0e3j8fj?optimize=true',
+      style: 'mapbox://styles/nolastan/cm89id94300fl01sqbb4u07v4?optimize=true',
       center: [lng, lat],
       zoom: zoom
     });
