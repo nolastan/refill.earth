@@ -59,6 +59,9 @@ export default function App() {
           } else if (name.startsWith('[chowder]')) {
             markerElement.innerHTML = `<img src="chowder.png" class="w-12 hover:w-14" />`;
             name = name.replace('[chowder]', '');
+          } else if (name.startsWith('[Civic Joy]')) {
+            markerElement.innerHTML = `<img src="civic-joy-sticker.png" class="w-10 hover:w-12" />`;
+            name = name.replace('[Civic Joy]', '');
           } else {
             markerElement.innerHTML = `<span class="text-4xl hover:text-5xl">${emoji || '📍'}</span>`;
           } 
